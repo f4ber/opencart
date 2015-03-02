@@ -66,6 +66,31 @@ class ControllerCommonSeoUrl extends Controller {
 			if (isset($this->request->get['route'])) {
 				return new Action($this->request->get['route']);
 			}
+		// Redirect 301	
+		} elseif (isset($this->request->get['route']) && $this->config->get('config_seo_url')) {
+			$arg = '';
+			if ($this->request->get['route'] == 'product/product' && isset($this->request->get['product_id'])) {
+				$this->request->get['route'] = 'product_id=' . $this->request->get['product_id'];
+			} elseif ($this->request->get['route'] == 'product/category' && isset($this->request->get['path'])) {
+				$categorys_id = explode('_', $this->request->get['path']);
+				$category_id = (int)array_pop($categorys_id);
+				$this->request->get['route'] = 'category_id=' . $category_id;
+			} elseif ($this->request->get['route'] == 'product/manufacturer/info' && isset($this->request->get['manufacturer_id'])) {
+				$this->request->get['route'] = 'manufacturer_id=' . $this->request->get['manufacturer_id'];
+			} elseif ($this->request->get['route'] == 'information/information' && isset($this->request->get['information_id'])) {
+				$this->request->get['route'] = 'information_id=' . $this->request->get['information_id'];
+			} elseif ($this->request->get['route'] == 'product/search') {
+				$args = str_replace("route=product/search", "", $this->request->server['QUERY_STRING']);
+				$arg = str_replace('&amp;', '&', $args);
+			} elseif ($this->request->get['route'] == 'common/home') {
+				$arg = HTTP_SERVER;
+			} 
+
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE query = '" . $this->db->escape($this->request->get['route']) . "'");
+			
+			if ($query->num_rows) {
+				$this->response->redirect($query->row['keyword'] . $arg, 301);
+			}
 		}
 	}
 
@@ -83,7 +108,7 @@ class ControllerCommonSeoUrl extends Controller {
 				if (($data['route'] == 'product/product' && $key == 'product_id') || (($data['route'] == 'product/manufacturer/info' || $data['route'] == 'product/product') && $key == 'manufacturer_id') || ($data['route'] == 'information/information' && $key == 'information_id')) {
 					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE `query` = '" . $this->db->escape($key . '=' . (int)$value) . "'");
 
-					if ($query->num_rows && $query->row['keyword']) {
+					if ($query->num_rows) {
 						$url .= '/' . $query->row['keyword'];
 
 						unset($data[$key]);
@@ -94,7 +119,7 @@ class ControllerCommonSeoUrl extends Controller {
 					foreach ($categories as $category) {
 						$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE `query` = 'category_id=" . (int)$category . "'");
 
-						if ($query->num_rows && $query->row['keyword']) {
+						if ($query->num_rows) {
 							$url .= '/' . $query->row['keyword'];
 						} else {
 							$url = '';
@@ -104,6 +129,12 @@ class ControllerCommonSeoUrl extends Controller {
 					}
 
 					unset($data[$key]);
+				} else  {
+					$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "url_alias WHERE `query` = '" . $this->db->escape($data['route']) . "'");
+					if ($query->num_rows) {
+						$url .= '/' . $query->row['keyword'];
+						unset($data[$key]);
+					}
 				}
 			}
 		}
