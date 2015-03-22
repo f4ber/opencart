@@ -59,6 +59,8 @@ class ControllerModuleFeatured extends Controller {
 					}
 	
 					$data['products'][] = array(
+						'quantity'    => $product_info['quantity'],
+						'minimum'	  => $product_info['minimum'],	
 						'product_id'  => $product_info['product_id'],
 						'thumb'       => $image,
 						'name'        => $product_info['name'],

@@ -213,6 +213,8 @@ class ControllerProductManufacturer extends Controller {
 				}
 
 				$data['products'][] = array(
+					'quantity'    => $result['quantity'],
+					'minimum'	  => $result['minimum'],	
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
 					'name'        => $result['name'],

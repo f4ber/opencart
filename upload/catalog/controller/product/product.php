@@ -268,6 +268,7 @@ class ControllerProductProduct extends Controller {
 			$data['model'] = $product_info['model'];
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
+			$data['quantity'] = $product_info['quantity'];
 
 			if ($product_info['quantity'] <= 0) {
 				$data['stock'] = $product_info['stock_status'];
@@ -427,6 +428,8 @@ class ControllerProductProduct extends Controller {
 				}
 
 				$data['products'][] = array(
+					'quantity'    => $result['quantity'],
+					'minimum'	  => $result['minimum'],
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
 					'name'        => $result['name'],

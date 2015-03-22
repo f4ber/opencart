@@ -310,7 +310,11 @@
             <?php } ?>
             <div class="form-group">
               <label class="control-label" for="input-quantity"><?php echo $entry_qty; ?></label>
-              <input type="text" name="quantity" value="<?php echo $minimum; ?>" size="2" id="input-quantity" class="form-control" />
+              <div class="quantity_div">
+				<span class="minus">&lt;</span>
+				<input type="text" name="quantity" class="quantity_input" size="2" value="<?php echo $minimum; ?>" data-maximum="<?php echo $quantity; ?>" id="input-quantity" class="form-control" />	  
+				<span class="plus">&gt;</span>
+			  </div>
               <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
               <br />
               <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary btn-lg btn-block"><?php echo $button_cart; ?></button>
@@ -381,8 +385,13 @@
               </p>
               <?php } ?>
             </div>
+			<div class="quantity_div">
+				<span class="minus">&lt;</span>
+				<input type="text" name="quantity" class="quantity_input" size="2" value="<?php echo $product['minimum']; ?>"  data-maximum="<?php echo $product['quantity']; ?>" />	  
+				<span class="plus">&gt;</span>
+			</div>
             <div class="button-group">
-              <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"><span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span> <i class="fa fa-shopping-cart"></i></button>
+              <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>', $(this).parent().parent().find('.quantity_input').val());"><span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span> <i class="fa fa-shopping-cart"></i></button>
               <button type="button" data-toggle="tooltip" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
               <button type="button" data-toggle="tooltip" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
             </div>
