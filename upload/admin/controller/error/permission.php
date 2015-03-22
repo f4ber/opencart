@@ -49,15 +49,7 @@ class ControllerErrorPermission extends Controller {
 				'common/forgotten',
 				'common/reset',
 				'error/not_found',
-				'error/permission',
-				'dashboard/order',
-				'dashboard/sale',
-				'dashboard/customer',
-				'dashboard/online',
-				'dashboard/map',
-				'dashboard/activity',
-				'dashboard/chart',
-				'dashboard/recent'				
+				'error/permission'
 			);
 
 			if (!in_array($route, $ignore) && !$this->user->hasPermission('access', $route)) {

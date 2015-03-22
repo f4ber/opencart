@@ -72,6 +72,7 @@
         </form>
       </div>
     </div>
+    </form>
   </div>
 </div>
 <?php echo $footer; ?>

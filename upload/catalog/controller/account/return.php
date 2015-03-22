@@ -348,6 +348,7 @@ class ControllerAccountReturn extends Controller {
 		$data['entry_reason'] = $this->language->get('entry_reason');
 		$data['entry_opened'] = $this->language->get('entry_opened');
 		$data['entry_fault_detail'] = $this->language->get('entry_fault_detail');
+		$data['entry_captcha'] = $this->language->get('entry_captcha');
 
 		$data['button_submit'] = $this->language->get('button_submit');
 		$data['button_back'] = $this->language->get('button_back');
@@ -517,13 +518,7 @@ class ControllerAccountReturn extends Controller {
 		} else {
 			$data['comment'] = '';
 		}
-		
-		if ($this->config->get('config_google_captcha_status')) {
-			$this->document->addScript('https://www.google.com/recaptcha/api.js');
-			
-			$data['site_key'] = $this->config->get('config_google_captcha_public');
-		}
-		
+
 		if ($this->config->get('config_return_id')) {
 			$this->load->model('catalog/information');
 
@@ -632,14 +627,8 @@ class ControllerAccountReturn extends Controller {
 			$this->error['reason'] = $this->language->get('error_reason');
 		}
 
-		if ($this->config->get('config_google_captcha_status')) {
-			$json = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($this->config->get('config_google_captcha_secret')) . '&response=g-recaptcha&remoteip=' . $this->request->server['REMOTE_ADDR']);
-			
-			$json = json_decode($json, true);
-				
-			if (!$json['success']) {
-				$this->error['captcha'] = $this->language->get('error_captcha');
-			}		
+		if (empty($this->session->data['captcha']) || ($this->session->data['captcha'] != $this->request->post['captcha'])) {
+			$this->error['captcha'] = $this->language->get('error_captcha');
 		}
 
 		if ($this->config->get('config_return_id')) {
