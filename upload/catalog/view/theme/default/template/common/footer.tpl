@@ -52,7 +52,6 @@ Please donate via PayPal to donate@opencart.com
 <script>
 	function quantity_control() {
 	$('.quantity_input').each(function() {
-	$(this).attr('readonly', 'readonly');
 	var minimum = $(this).val();
 	var maximum = $(this).attr('data-maximum');
 	if(maximum <= 0) {
