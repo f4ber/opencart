@@ -182,7 +182,7 @@ class ModelOpenbayEbayOrder extends Model{
 		// check if the first name, address 1 and country are set
 		$query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order` WHERE `order_id` = '" . (int)$order_id . "' AND `payment_firstname` != '' AND `payment_address_1` != '' AND `payment_country` != ''");
 
-		if ($query->num_rows == 0) {
+		if ($query->num_rows == 0 || (isset($query->row['customer_id']) && $query->row['customer_id'] == 0)) {
 			return false;
 		} else {
 			return true;
@@ -231,7 +231,14 @@ class ModelOpenbayEbayOrder extends Model{
 				$message .= "\n\n";
 				$message .= 'eBay and Amazon order management - http://www.openbaypro.com/';
 
-				$mail = new Mail($this->config->get('config_mail'));
+				$mail = new Mail();
+				$mail->protocol = $this->config->get('config_mail_protocol');
+				$mail->parameter = $this->config->get('config_mail_parameter');
+				$mail->hostname = $this->config->get('config_smtp_host');
+				$mail->username = $this->config->get('config_smtp_username');
+				$mail->password = $this->config->get('config_smtp_password');
+				$mail->port = $this->config->get('config_smtp_port');
+				$mail->timeout = $this->config->get('config_smtp_timeout');
 				$mail->setTo($order_info['email']);
 				$mail->setFrom($this->config->get('config_email'));
 				$mail->setSender($order_info['store_name']);
@@ -255,6 +262,9 @@ class ModelOpenbayEbayOrder extends Model{
 
 				$this->cache->delete('product');
 
+				// Downloads
+				$order_download_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order_download` WHERE `order_id` = '" . (int)$order_id . "'");
+
 				// Order Totals
 				$order_total_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order_total` WHERE `order_id` = '" . (int)$order_id . "' ORDER BY `sort_order` ASC");
 
@@ -276,64 +286,64 @@ class ModelOpenbayEbayOrder extends Model{
 				$order_status = '';
 				if ($order_status_query->num_rows) {
 					$order_status = $order_status_query->row['name'];
-				} else {
-					$order_status = '';
 				}
 
 				$subject = sprintf($language->get('text_new_subject'), $order_info['store_name'], $order_id);
 
 				// HTML Mail
-				$data = array();
+				$template = new Template();
 
-				$data['title'] = sprintf($language->get('text_new_subject'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'), $order_id);
-				$data['text_greeting'] = sprintf($language->get('text_new_greeting'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
-				$data['text_link'] = $language->get('text_new_link');
-				$data['text_download'] = $language->get('text_new_download');
-				$data['text_order_detail'] = $language->get('text_new_order_detail');
-				$data['text_instruction'] = $language->get('text_new_instruction');
-				$data['text_order_id'] = $language->get('text_new_order_id');
-				$data['text_date_added'] = $language->get('text_new_date_added');
-				$data['text_payment_method'] = $language->get('text_new_payment_method');
-				$data['text_shipping_method'] = $language->get('text_new_shipping_method');
-				$data['text_email'] = $language->get('text_new_email');
-				$data['text_telephone'] = $language->get('text_new_telephone');
-				$data['text_ip'] = $language->get('text_new_ip');
-				$data['text_order_status'] = $language->get('text_new_order_status');
-				$data['text_payment_address'] = $language->get('text_new_payment_address');
-				$data['text_shipping_address'] = $language->get('text_new_shipping_address');
-				$data['text_product'] = $language->get('text_new_product');
-				$data['text_model'] = $language->get('text_new_model');
-				$data['text_quantity'] = $language->get('text_new_quantity');
-				$data['text_price'] = $language->get('text_new_price');
-				$data['text_total'] = $language->get('text_new_total');
-				$data['text_footer'] = $language->get('text_new_footer');
+				$template->data['title'] = sprintf($language->get('text_new_subject'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'), $order_id);
+				$template->data['text_greeting'] = sprintf($language->get('text_new_greeting'), html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'));
+				$template->data['text_link'] = $language->get('text_new_link');
+				$template->data['text_download'] = $language->get('text_new_download');
+				$template->data['text_order_detail'] = $language->get('text_new_order_detail');
+				$template->data['text_instruction'] = $language->get('text_new_instruction');
+				$template->data['text_order_id'] = $language->get('text_new_order_id');
+				$template->data['text_date_added'] = $language->get('text_new_date_added');
+				$template->data['text_payment_method'] = $language->get('text_new_payment_method');
+				$template->data['text_shipping_method'] = $language->get('text_new_shipping_method');
+				$template->data['text_email'] = $language->get('text_new_email');
+				$template->data['text_telephone'] = $language->get('text_new_telephone');
+				$template->data['text_ip'] = $language->get('text_new_ip');
+				$template->data['text_payment_address'] = $language->get('text_new_payment_address');
+				$template->data['text_shipping_address'] = $language->get('text_new_shipping_address');
+				$template->data['text_product'] = $language->get('text_new_product');
+				$template->data['text_model'] = $language->get('text_new_model');
+				$template->data['text_quantity'] = $language->get('text_new_quantity');
+				$template->data['text_price'] = $language->get('text_new_price');
+				$template->data['text_total'] = $language->get('text_new_total');
+				$template->data['text_footer'] = $language->get('text_new_footer');
 
 				if ($this->config->get('ebay_email_brand_disable') == 1) {
-					$data['text_powered'] = '';
+					$template->data['text_powered'] = '';
 				} else {
-					$data['text_powered'] = '<a href="http://www.openbaypro.com/">OpenBay Pro - eBay and Amazon order management for OpenCart</a> . ';
+					$template->data['text_powered'] = '<a href="http://www.openbaypro.com/">OpenBay Pro - eBay and Amazon order management for OpenCart</a> . ';
 				}
 
-				$data['logo'] = HTTPS_SERVER  . 'image/' . $this->config->get('config_logo');
-				$data['store_name'] = $order_info['store_name'];
-				$data['store_url'] = $order_info['store_url'];
-				$data['customer_id'] = $order_info['customer_id'];
-				$data['link'] = $order_info['store_url'] . 'index.php?route=account/order/info&order_id=' . $order_id;
+				$template->data['logo'] = HTTPS_SERVER  . 'image/' . $this->config->get('config_logo');
+				$template->data['store_name'] = $order_info['store_name'];
+				$template->data['store_url'] = $order_info['store_url'];
+				$template->data['customer_id'] = $order_info['customer_id'];
+				$template->data['link'] = $order_info['store_url'] . 'index.php?route=account/order/info&order_id=' . $order_id;
 
-				$data['download'] = '';
+				if ($order_download_query->num_rows) {
+					$template->data['download'] = $order_info['store_url'] . 'index.php?route=account/download';
+				} else {
+					$template->data['download'] = '';
+				}
 
-				$data['order_id'] = $order_id;
-				$data['date_added'] = date($language->get('date_format_short'), strtotime($order_info['date_added']));
-				$data['payment_method'] = $order_info['payment_method'];
-				$data['shipping_method'] = $order_info['shipping_method'];
-				$data['email'] = $order_info['email'];
-				$data['telephone'] = $order_info['telephone'];
-				$data['ip'] = $order_info['ip'];
-				$data['order_status'] = $order_status;
+				$template->data['order_id'] = $order_id;
+				$template->data['date_added'] = date($language->get('date_format_short'), strtotime($order_info['date_added']));
+				$template->data['payment_method'] = $order_info['payment_method'];
+				$template->data['shipping_method'] = $order_info['shipping_method'];
+				$template->data['email'] = $order_info['email'];
+				$template->data['telephone'] = $order_info['telephone'];
+				$template->data['ip'] = $order_info['ip'];
 
-				$data['comment'] = '';
+				$template->data['comment'] = '';
 				if ($comment && $notify) {
-					$data['comment'] = nl2br($comment);
+					$template->data['comment'] = nl2br($comment);
 				}
 
 				if ($order_info['payment_address_format']) {
@@ -368,7 +378,7 @@ class ModelOpenbayEbayOrder extends Model{
 					'country'   => $order_info['payment_country']
 				);
 
-				$data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+				$template->data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
 				if ($order_info['shipping_address_format']) {
 					$format = $order_info['shipping_address_format'];
@@ -402,8 +412,8 @@ class ModelOpenbayEbayOrder extends Model{
 					'country'   => $order_info['shipping_country']
 				);
 
-				$data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
-				$data['products']         = array();
+				$template->data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+				$template->data['products']         = array();
 
 				foreach ($order_product_query->rows as $product) {
 					$option_data = array();
@@ -423,7 +433,7 @@ class ModelOpenbayEbayOrder extends Model{
 						);
 					}
 
-					$data['products'][] = array(
+					$template->data['products'][] = array(
 						'name'     => $product['name'],
 						'model'    => $product['model'],
 						'option'   => $option_data,
@@ -433,19 +443,14 @@ class ModelOpenbayEbayOrder extends Model{
 					);
 				}
 
-				$data['vouchers'] = array();
+				$template->data['vouchers'] = array();
 
-				foreach ($order_total_query->rows as $total) {
-					$data['totals'][] = array(
-						'title' => $total['title'],
-						'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']),
-					);
-				}
+				$template->data['totals'] = $order_total_query->rows;
 
 				if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/mail/order.tpl')) {
-					$html = $this->load->view($this->config->get('config_template') . '/template/mail/order.tpl', $data);
+					$html = $template->fetch($this->config->get('config_template') . '/template/mail/order.tpl');
 				} else {
-					$html = $this->load->view('default/template/mail/order.tpl', $data);
+					$html = $template->fetch('default/template/mail/order.tpl');
 				}
 
 				// Text Mail
@@ -477,7 +482,7 @@ class ModelOpenbayEbayOrder extends Model{
 				$text .= $language->get('text_new_order_total') . "\n";
 
 				foreach ($order_total_query->rows as $total) {
-					$text .= $total['title'] . ': ' . html_entity_decode($this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']), ENT_NOQUOTES, 'UTF-8') . "\n";
+					$text .= $total['title'] . ': ' . html_entity_decode($total['text'], ENT_NOQUOTES, 'UTF-8') . "\n";
 				}
 
 				$text .= "\n";
@@ -485,6 +490,11 @@ class ModelOpenbayEbayOrder extends Model{
 				if ($order_info['customer_id']) {
 					$text .= $language->get('text_new_link') . "\n";
 					$text .= $order_info['store_url'] . 'index.php?route=account/order/info&order_id=' . $order_id . "\n\n";
+				}
+
+				if ($order_download_query->num_rows) {
+					$text .= $language->get('text_new_download') . "\n";
+					$text .= $order_info['store_url'] . 'index.php?route=account/download' . "\n\n";
 				}
 
 				if ($order_info['comment']) {
@@ -495,7 +505,14 @@ class ModelOpenbayEbayOrder extends Model{
 				$text .= $language->get('text_new_footer') . "\n\n";
 
 				if ($notify == 1) {
-					$mail = new Mail($this->config->get('config_mail'));
+					$mail = new Mail();
+					$mail->protocol = $this->config->get('config_mail_protocol');
+					$mail->parameter = $this->config->get('config_mail_parameter');
+					$mail->hostname = $this->config->get('config_smtp_host');
+					$mail->username = $this->config->get('config_smtp_username');
+					$mail->password = $this->config->get('config_smtp_password');
+					$mail->port = $this->config->get('config_smtp_port');
+					$mail->timeout = $this->config->get('config_smtp_timeout');
 					$mail->setTo($order_info['email']);
 					$mail->setFrom($this->config->get('config_email'));
 					$mail->setSender($order_info['store_name']);
@@ -514,7 +531,7 @@ class ModelOpenbayEbayOrder extends Model{
 		$item_id = $this->openbay->ebay->getEbayItemId($product_id);
 
 		if ($this->openbay->addonLoad('openstock') && !empty($sku)) {
-			$this->db->query("UPDATE `" . DB_PREFIX . "product_option_variant` SET `stock` = (`stock` " . $this->db->escape((string)$symbol) . " " . (int)$qty . ") WHERE `sku` = '" . (string)$sku . "' AND `product_id` = '" . (int)$product_id . "' AND `subtract` = '1'");
+			$this->db->query("UPDATE `" . DB_PREFIX . "product_option_relation` SET `stock` = (`stock` " . $this->db->escape((string)$symbol) . " " . (int)$qty . ") WHERE `var` = '" . (string)$sku . "' AND `product_id` = '" . (int)$product_id . "' AND `subtract` = '1'");
 
 			$stock = $this->openbay->ebay->getProductStockLevel($product_id, $sku);
 
@@ -593,27 +610,6 @@ class ModelOpenbayEbayOrder extends Model{
 		} else {
 			$this->lockAdd($smp_id);
 			return false;
-		}
-	}
-
-	public function addOrderHistory($order_id) {
-		$this->openbay->ebay->log('addOrderHistory() - Order id:' . $order_id . ' passed');
-		if (!$this->openbay->ebay->isEbayOrder($order_id)) {
-			$order_products = $this->openbay->getOrderProducts($order_id);
-
-			foreach($order_products as $order_product) {
-				$product = $this->db->query("SELECT * FROM `" . DB_PREFIX . "product` WHERE `product_id` = '" . (int)$order_product['product_id'] . "' LIMIT 1")->row;
-
-				if ($this->openbay->addonLoad('openstock') && (isset($product['has_option']) && $product['has_option'] == 1)) {
-					$order_product_variant = $this->openbay->getOrderProductVariant($order_id, $order_product['product_id'], $order_product['order_product_id']);
-
-					if (isset($order_product_variant['sku']) && $order_product_variant['sku'] != '') {
-						$this->openbay->ebay->ebaySaleStockReduce((int)$order_product['product_id'], (string)$order_product_variant['sku']);
-					}
-				} else {
-					$this->openbay->ebay->ebaySaleStockReduce($order_product['product_id']);
-				}
-			}
 		}
 	}
 }

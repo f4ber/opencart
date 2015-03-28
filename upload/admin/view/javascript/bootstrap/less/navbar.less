@@ -67,7 +67,6 @@
 
     &.collapse {
       display: block !important;
-      visibility: visible !important;
       height: auto !important;
       padding-bottom: 0; // Override default setting
       overflow: visible !important;
@@ -142,6 +141,7 @@
   right: 0;
   left: 0;
   z-index: @zindex-navbar-fixed;
+  .translate3d(0, 0, 0);
 
   // Undo the rounded corners
   @media (min-width: @grid-float-breakpoint) {
@@ -299,10 +299,6 @@
   .form-group {
     @media (max-width: @grid-float-breakpoint-max) {
       margin-bottom: 5px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
     }
   }
 
@@ -331,7 +327,6 @@
 }
 // Menu position and menu caret support for dropups via extra dropup class
 .navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {
-  .border-top-radius(@navbar-border-radius);
   .border-bottom-radius(0);
 }
 

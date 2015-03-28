@@ -1,109 +1,93 @@
 <?php echo $header; ?><?php echo $column_left; ?>
 <div id="content">
-    <div class="page-header">
-        <div class="container-fluid">
-            <div class="pull-right">
-                <?php if ($has_listing_errors) { ?>
-                <a href="<?php echo $url_remove_errors; ?>" data-toggle="tooltip" title="<?php echo $button_remove_error; ?>" class="btn btn-danger"><i class="fa fa-reply"></i></a>
-                <?php } ?>
-                <a href="<?php echo $cancel_url; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a> </div>
-            <h1><?php echo $text_title_advanced; ?></h1>
-            <ul class="breadcrumb">
-                <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-                <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
-                <?php } ?>
-            </ul>
-        </div>
-    </div>
+  <div class="page-header">
     <div class="container-fluid">
-        <?php if ($errors) { ?>
-        <div class="alert alert-danger">
-            <ul>
-                <?php foreach ($errors as $listing_error) { ?>
-                <li><i class="fa fa-exclamation-circle"></i> <?php echo $listing_error['message']; ?></li>
-                <?php } ?>
-            </ul>
-        </div>
+      <div class="pull-right">
+        <?php if ($has_listing_errors) { ?>
+        <a href="<?php echo $url_remove_errors; ?>" data-toggle="tooltip" title="<?php echo $button_remove_error; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
         <?php } ?>
-        <?php if ($success) { ?>
-        <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?></div>
+        <a href="<?php echo $cancel_url; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a> </div>
+      <h1><?php echo $text_title_advanced; ?></h1>
+      <ul class="breadcrumb">
+        <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
         <?php } ?>
-        <ul class="nav nav-tabs" id="tabs">
-            <li class="active"><a href="#page-main" data-toggle="tab"><?php echo $tab_main; ?></a></li>
-        </ul>
-        <form method="POST" id="product_form_advanced" class="form-horizontal">
-            <input type="hidden" name="upload_after" value="false">
-            <div class="tab-content" id="tab-content">
-                <div class="tab-pane active" id="page-main">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"><?php echo $entry_product; ?></label>
-                        <div class="col-sm-10">
-                            <p> <a href="<?php echo $listing_url; ?>"><?php echo $listing_name; ?>
-                                <?php if (!empty($options)) { echo " : "; } ?>
-                            </a>
-                                <?php if (!empty($options)) { ?>
-                                <select id="openstock_selector" name="optionVar" class="form-control">
-                                    <?php $option_selected = false; ?>
-                                    <?php foreach($options as $option) { ?>
-                                    <?php if (!empty($option['sku'])) { ?>
-                                    <option <?php if ($variation == $option['sku']) { echo "selected='selected'"; $option_selected = true; } ?> value="<?php echo  $option['sku']?>"><?php echo $option['combination']?></option>
-                                    <?php } ?>
-                                    <?php } ?>
-                                    <?php if ($option_selected == false) { ?>
-                                    <option selected="selected"></option>
-                                    <?php } ?>
-                                </select>
-                                <?php }?>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <label class="col-sm-2 control-label" for="category_selector" id="category_selector_label"><?php echo $entry_category; ?></label>
-                        <div class="col-sm-4">
-                            <select name="category_selector" id="category_selector" class="form-control">
-                                <option value=""></option>
-                                <?php foreach($amazonus_categories as $category) {  ?>
-                                <option <?php if ($edit_product_category == $category["name"]) echo 'selected="selected"'; ?> value="<?php echo $category['template'] ?>"><?php echo $category['friendly_name'] ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <table class="table table-bordered table-hover">
-                        <tbody class="fields_advanced">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="browse-node-modal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                            <h4 id="mySmallModalLabel" class="modal-title"><?php echo $entry_browse_node; ?></h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="browse-node-content"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <div class="well">
-            <div class="row">
-                <div class="col-md-12 text-right"> <a class="btn btn-primary" data-toggle="tooltip" title="<?php echo $button_save ?>" onclick="validate_and_save('advanced')"><i class="fa fa-save fa-lg"></i></a> <a class="btn btn-primary" data-toggle="tooltip" title="<?php echo $button_save_upload ?>" onclick="save_and_upload()"><i class="fa fa-cloud-upload fa-lg"></i></a> <a class="btn btn-primary" data-toggle="tooltip" title="<?php echo $button_saved_listings ?>" href="<?php echo $saved_listings_url; ?>"><i class="fa fa-copy fa-lg"></i></a> </div>
-            </div>
-        </div>
+      </ul>
     </div>
+  </div>
+  <div class="container-fluid">
+    <?php if ($errors) { ?>
+    <div class="alert alert-danger">
+      <ul>
+        <?php foreach ($errors as $listing_error) { ?>
+        <li><i class="fa fa-exclamation-circle"></i> <?php echo $listing_error ?></li>
+        <?php } ?>
+      </ul>
+    </div>
+    <?php } ?>
+    <?php if ($success) { ?>
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?></div>
+    <?php } ?>
+    <div id="tabs" class="htabs"> <a href="#page-main"><?php echo $tab_main; ?></a>
+      <div id="dynamic_tabs"></div>
+    </div>
+    <form method="POST" id="product_form_advanced">
+      <div id="page-main">
+        <table class="form" align="left">
+          <tbody>
+            <tr>
+              <td style="width: 400px;"><?php echo $entry_product; ?></td>
+              <td><a href="<?php echo $listing_url; ?>"><?php echo $listing_name; ?>
+                <?php if (!empty($options)) { echo " : "; } ?>
+                </a>
+                <?php if (!empty($options)) { ?>
+                <select id="openstock_selector" name="optionVar">
+                  <option></option>
+                  <?php foreach($options as $option) { ?>
+                  <option <?php if ($variation === $option['var']) { echo "selected='selected'";} ?> value="<?php echo  $option['var']?>"><?php echo $option['combi']?></option>
+                  <?php } ?>
+                </select>
+                <?php }?></td>
+            </tr>
+            <tr>
+              <td><?php echo $entry_category; ?><br>
+                <span class="help"></span></td>
+              <td><select id="category_selector">
+                  <option value=""></option>
+                  <?php foreach($amazonus_categories as $category) {  ?>
+                  <option <?php if ($edit_product_category == $category["name"]) echo 'selected="selected"'; ?> value="<?php echo $category['template'] ?>"><?php echo $category['friendly_name'] ?></option>
+                  <?php } ?>
+                </select></td>
+            </tr>
+          </tbody>
+          <input type="hidden" name="upload_after" value="false">
+          <tbody class="fields_advanced">
+          </tbody>
+        </table>
+      </div>
+      <div id="dynamic_pages"> </div>
+      <div id="greyScreen"></div>
+      <div id="browseNodeForm" class="greyScreenBox nodePage">
+        <div class="bold border p5 previewClose">X</div>
+        <div id="browseNodeFormContent"></div>
+      </div>
+    </form>
+    <div class="well">
+      <div class="row">
+        <div class="col-md-12 text-right"> <a class="btn btn-primary" data-toggle="tooltip" title="<?php echo $button_save ?>" onclick="validate_and_save('advanced')"><i class="fa fa-save fa-lg"></i></a> <a class="btn btn-primary" data-toggle="tooltip" title="<?php echo $button_save_upload ?>" onclick="save_and_upload()"><i class="fa fa-cloud-upload fa-lg"></i></a> <a class="btn btn-primary" data-toggle="tooltip" title="<?php echo $button_saved_listings ?>" href="<?php echo $saved_listings_url; ?>"><i class="fa fa-copy fa-lg"></i></a> </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript"><!--
 $(document).ready(function(){
     $('#openstock_selector').change(function() {
-        redirectOption($('#openstock_selector').val(), 'advanced');
+        redirectOption($('#openstock_selector').attr('value'), 'advanced');
     });
 
     <?php if (empty($amazonus_categories)) { ?>
         $("#advanced_table").html("");
-        $(".content").prepend('<div id="warning" class="alert alert-danger"><?php echo $error_connecting; ?></div>');
+        $(".content").prepend('<div id="warning" class="warning"><?php echo $error_connecting; ?></div>');
         return;
     <?php } ?>
 
@@ -112,11 +96,12 @@ $(document).ready(function(){
     });
 
     $('#category_selector').change(function(){
-        var xml = $('#category_selector').val();
+
+        var xml = $('#category_selector').attr('value');
         if (xml == '') {
             $('.fields_advanced').empty();
-            $('.dynamic-tab').remove();
-            $('.dynamic-page').remove();
+            $('#dynamic_tabs').empty();
+            $('#dynamic_pages').empty()
             return;
         }
         show_form(xml, 'advanced');
@@ -128,7 +113,7 @@ $(document).ready(function(){
 });
 
 function redirectOption(varOption, tabOption) {
-    var searchLoc = insertParamToUrl(document.location.search, 'sku', varOption);
+    var searchLoc = insertParamToUrl(document.location.search, 'var', varOption);
     searchLoc = insertParamToUrl(searchLoc, 'tab', tabOption);
     searchLoc = searchLoc.substr(1);
     if (document.location.search === searchLoc) {
@@ -163,18 +148,20 @@ function insertParamToUrl(searchLoc, key, value) {
     }
 }
 
+
 var fieldsArray = new Array();
 
+//formType = 'quick' or 'advanced'
 function show_form(xml, formType) {
     $('.fields_' + formType).empty();
-    $('.dynamic-tab').remove();
-    $('.dynamic-page').remove();
+    $('#dynamic_tabs').empty();
+    $('#dynamic_pages').empty();
 
     var parserURL = '<?php echo html_entity_decode($template_parser_url) ?>';
     var reqUrl = parserURL + '&xml=' + xml;
 
-    if ($('#openstock_selector').val() !== undefined) {
-        reqUrl = reqUrl + '&sku=' + $('#openstock_selector').val();
+    if ($('#openstock_selector').attr('value') !== undefined) {
+        reqUrl = reqUrl + '&var=' + $('#openstock_selector').attr('value');
     }
 
     $.ajax({
@@ -182,11 +169,11 @@ function show_form(xml, formType) {
         data: {},
         dataType: 'json',
         beforeSend: function() {
-            $('#category_selector').attr('disabled', 'disabled');
-            $('#category_selector_label').after('<a class="btn btn-primary wait" disabled="disabled"><i class="fa fa-cog fa-lg fa-spin"></i> </a>');
+            $('#category_selector').attr('disabled', true);
+            $('#category_selector').after('<span class="wait"><img src="view/image/loading.gif" alt="" />&nbsp;</span>');
         },
         complete: function() {
-            $('#category_selector').removeAttr('disabled');
+            $('#category_selector').attr('disabled', false);
             $('.wait').remove();
         },
         success: function(data) {
@@ -199,14 +186,13 @@ function show_form(xml, formType) {
                 return;
             }
             for(tab in data['tabs']) {
-                $('#tabs').append('<li class="dynamic-tab"><a href="#page-' + data['tabs'][tab]['id'] + '" data-toggle="tab">' + data['tabs'][tab]['name'] + '</a></li>');
+                $('#dynamic_tabs').append('<a href="#page-' + data['tabs'][tab]['id'] + '">' + data['tabs'][tab]['name'] + '</a>');
 
-                var pageHtml = '';
-                pageHtml += '<div id="page-' + data['tabs'][tab]['id'] + '" class="tab-pane dynamic-page">';
-                pageHtml += '<div class="fields_advanced"></div>';
-                pageHtml += '</div>'
+                var pageHtml = '<div id="page-' + data['tabs'][tab]['id'] + '"><table class="form" align="left">';
+                pageHtml += '<tbody class="fields_advanced"></tbody>';
+                pageHtml += '</table></div>'
 
-                $('#tab-content').append(pageHtml);
+                $('#dynamic_pages').append(pageHtml);
             }
 
             var categoryName = data['category'];
@@ -215,32 +201,27 @@ function show_form(xml, formType) {
             $('.fields_' + formType).append('<input type="hidden" name="category" value="' + categoryName + '">');
 
             for (i in fieldsArray[formType]) {
-                var row  = '<div class="form-group';
-
-
-                if (fieldsArray[formType][i]['type'] == 'required') {
-                    row += ' required';
-                }
-
+                var row  = "";
                 if (fieldsArray[formType][i]['child']){
-                    row += ' child_row" display="no" field_index="' + i + '" style="display: none">';
+                    row += '<tr class="child_row" display="no" field_index="' + i + '" style="display: none">';
                 } else {
-                    row += '">';
+                    row += '<tr>';
                 }
 
-                row += '<label class="col-sm-2 control-label">'+fieldsArray[formType][i]['title']+'</label>';
-                row += '<div class="col-sm-10">';
+                row += '<td>';
+                if (fieldsArray[formType][i]['type'] == 'required') {
+                    row += '<span class="required">* </span>';
+                }
+                row += fieldsArray[formType][i]['title'];
+                row += '<span class="help">' + fieldsArray[formType][i]['definition'] + '</span>';
+                row += '</td>';
+                row += '<td>';
 
-                row += '<div class="alert alert-danger" id="error_' + fieldsArray[formType][i]['name'] + '" style="display:none;"></div>'
 
                 if (fieldsArray[formType][i]['name'] == "Quantity") {
                     row += getQuantityField(fieldsArray[formType][i]);
                 } else if (fieldsArray[formType][i]['accepted']['type'] == "integer") {
-                    if (fieldsArray[formType][i]['name'] == 'RecommendedBrowseNode' || fieldsArray[formType][i]['name'] == 'RecommendedBrowseNode2'){
-                        row += getBrowseNodeField(fieldsArray[formType][i]);
-                    } else {
-                        row += getIntegerField(fieldsArray[formType][i]);
-                    }
+                    row += getIntegerField(fieldsArray[formType][i]);
                 }
                 else if (fieldsArray[formType][i]['accepted']['type'] == "text_area") {
                     row += getTextAreaField(fieldsArray[formType][i]);
@@ -255,12 +236,10 @@ function show_form(xml, formType) {
                     row += getStringField(fieldsArray[formType][i]);
                 }
 
-                if (fieldsArray[formType][i]['definition']) {
-                    row += '<span class="help-block">' + fieldsArray[formType][i]['definition'] + '</span>';
-                }
+                row += '<span class="required" id="error_' + fieldsArray[formType][i]['name'] + '"></span>'
 
-                row += '</div>';
-                row += '</div>';
+                row += '</td>';
+                row += '</tr>';
 
                 $('#page-' + fieldsArray[formType][i]['tab'] + ' .fields_' + formType).append(row);
             }
@@ -270,7 +249,7 @@ function show_form(xml, formType) {
                 $(this).change();
             });
         },
-        error: function (xhr, ajaxOptions, thrownError) {
+        error: function(xhr, ajaxOptions, thrownError) {
             if (xhr.status != 0) { alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText); }
         }
     });
@@ -279,7 +258,7 @@ function show_form(xml, formType) {
 //Called when chenge to form was made. Shows child rows bassed on input if needed.
 function update_form(element, formType) {
     var changedFieldName = $(element).attr('field_name');
-    var changedFieldValue = $(element).val();
+    var changedFieldValue = $(element).attr('value');
 
     $('.fields_' + formType + ' .child_row').each(function (i) {
         var index = $(this).attr('field_index');
@@ -314,16 +293,38 @@ function update_form(element, formType) {
 function getImageField(fieldData) {
     var output = "";
 
-    output += '<a class="img-thumbnail img-edit" id="thumb-image-'+fieldData['name']+'">';
-    if (fieldData['thumb'] != "") {
-        output += '<img src="'+fieldData['thumb']+'" alt="" title="" />';
+    output += '<input ';
+    output += 'type="hidden" ';
+    output += 'accepted="' + fieldData['accepted']['type'] + '" ';
+    output += 'field_name="' + fieldData['name'] + '" ';
+    output += 'field_type="' + fieldData['type'] + '" ';
+    output += 'id="imagefield_' + fieldData['name'] + '" ';
+    output += 'name="fields[' + fieldData['name'] + ']" ';
+    output += 'value="' + fieldData['value'] + '">';
+
+    output += '<div class="image">';
+    output += '<img height="100" alt="" id="thumb_' + fieldData['name'] + '" ';
+    if (fieldData['value'] === "") {
+        output += 'src="<?php echo $no_image; ?>"';
+    } else if (fieldData['thumb'] !== "") {
+        output += 'src="' + fieldData['thumb'] + '"';
     } else {
-        output += '<i class="fa fa-camera fa-5x"></i>';
+        output += 'src="' + fieldData['value'] + '"';
     }
-    output += "</a>";
-    output += '<input type="hidden" id="input-image-'+fieldData['name']+'" name="fields[' + fieldData['name'] + ']" value="' + fieldData['value'] + '" accepted="' + fieldData['accepted']['type'] + '" field_name="' + fieldData['name'] + '" field_type="' + fieldData['type'] + '">';
+    output += "/>";
+    output += '<br />';
+
+    output += '<a onclick="image_upload(\'imagefield_' + fieldData['name'] + '\', \'thumb_' + fieldData['name'] + '\')"><?php echo $button_browse; ?></a>';
+    output += '  |  ';
+    output += '<a onclick="cleaImageField(\'' + fieldData['name'] + '\')"><?php echo $button_clear; ?></a>';
+    output += "</div>";
 
     return output;
+}
+
+function cleaImageField(fieldName) {
+    $('#imagefield_' + fieldName).attr('value', '');
+    $('#thumb_' + fieldName).attr('src', '<?php echo $no_image; ?>');
 }
 
 function getQuantityField(fieldData) {
@@ -337,7 +338,7 @@ function getQuantityField(fieldData) {
     output += 'field_name="' + fieldData['name'] + '" ';
     output += 'field_type="' + fieldData['type'] + '" ';
     output += 'name="fields[' + fieldData['name'] + ']" ';
-    output += 'value="' + fieldData['value'] + '" class="form-control">';
+    output += 'value="' + fieldData['value'] + '">';
 
     return output;
 }
@@ -352,30 +353,10 @@ function getIntegerField(fieldData) {
     output += 'field_name="' + fieldData['name'] + '" ';
     output += 'field_type="' + fieldData['type'] + '" ';
     output += 'name="fields[' + fieldData['name'] + ']" ';
-    output += 'class="form-control" ';
+    if (fieldData['name'] == 'RecommendedBrowseNode' || fieldData['name'] == 'RecommendedBrowseNode2'){
+        output += 'class="browseNode" ';
+    }
     output += 'value="' + fieldData['value'] + '">';
-
-    return output;
-}
-
-function getBrowseNodeField(fieldData) {
-    var output = "";
-
-    output += '<div class="input-group col-md-3">';
-    output += '<input ';
-    output += 'id="'+fieldData['name']+'_input" ';
-    output += 'type="number" ';
-    output += 'min="0" ';
-    output += 'accepted="' + fieldData['accepted']['type'] + '" ';
-    output += 'field_name="' + fieldData['name'] + '" ';
-    output += 'field_type="' + fieldData['type'] + '" ';
-    output += 'name="fields[' + fieldData['name'] + ']" ';
-    output += 'class="form-control" ';
-    output += 'onclick="loadBrowseNode(\''+fieldData['name']+'\');" ';
-    output += 'value="' + fieldData['value'] + '">';
-    output += '<span class="input-group-addon"><i class="fa fa-sitemap fa-lg"></i></span>';
-    output += '</div>';
-    output += '<span class="label label-info" style="display:none;" id="'+fieldData['name']+'_label"></span>';
 
     return output;
 }
@@ -384,6 +365,8 @@ function getTextAreaField(fieldData) {
     var output = "";
 
     output += '<textarea ';
+    output += 'rows="5" ';
+    output += 'cols="60" ';
     if ('min_length' in fieldData['accepted']) {
         output += 'min_length="'+ fieldData['accepted']['min_length'] + '" ';
     }
@@ -392,7 +375,7 @@ function getTextAreaField(fieldData) {
     }
     output += 'field_name="' + fieldData['name'] + '" ';
     output += 'field_type="' +  fieldData['type'] + '" ';
-    output += 'name="fields[' + fieldData['name'] + ']" class="form-control" rows="3">';
+    output += 'name="fields[' + fieldData['name'] + ']" class="width400 height250">';
     output += fieldData['value'];
     output += '</textarea>';
 
@@ -413,7 +396,7 @@ function getStringField(fieldData) {
     output += 'field_name="' + fieldData['name'] + '" ';
     output += 'field_type="' + fieldData['type'] + '" ';
     output += 'name="fields[' + fieldData['name'] + ']" ';
-    output += 'value="' + fieldData['value'] + '" class="form-control">';
+    output += 'value="' + fieldData['value'] + '" class="width400">';
 
     return output;
 }
@@ -424,7 +407,7 @@ function getSelectField(fieldData) {
     output += '<select ';
     output += 'field_name="' + fieldData['name'] + '" ';
     output += 'field_type="' + fieldData['type'] + '" ';
-    output += 'name="fields[' + fieldData['name'] + ']" class="form-control">';
+    output += 'name="fields[' + fieldData['name'] + ']" class="width250">';
 
     output += '<option></option>';
 
@@ -454,17 +437,51 @@ function getSelectField(fieldData) {
     return output;
 }
 
+function image_upload(field, thumb) {
+    $('#dialog').remove();
+
+    $('#content').prepend('<div id="dialog" style="padding: 3px 0px 0px 0px;"><iframe src="index.php?route=common/filemanager&token=<?php echo $token; ?>&field=' + encodeURIComponent(field) + '" style="padding:0; margin: 0; display: block; width: 100%; height: 100%;" frameborder="no" scrolling="auto"></iframe></div>');
+
+    $('#dialog').dialog({
+        title: '<?php echo $text_image_manager; ?>',
+        close: function (event, ui) {
+            if ($('#' + field).attr('value')) {
+                $.ajax({
+                    url: 'index.php?route=common/filemanager/image&token=<?php echo $token; ?>&image=' + encodeURIComponent($('#' + field).val()),
+                    dataType: 'text',
+                    success: function(data) {
+                        if (data != "") {
+                            $('#' + thumb).replaceWith('<img src="' + data + '" alt="" id="' + thumb + '" />');
+                            var imageUrl = $('#' + field).attr('value');
+                            $('#' + field).attr('value', '<?php echo HTTPS_CATALOG; ?>image/' + imageUrl);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status != 0) { alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText); }
+                  }
+                });
+            }
+        },
+        bgiframe: false,
+        width: 800,
+        height: 400,
+        resizable: false,
+        modal: false
+    });
+}
+
 function validate(formType) {
+    if ($('#category_selector').val() == '') {
+        return false;
+    }
+
     var warnings = 0;
     var productIdType;
     var productId;
     var productIdRequired;
 
-    if ($('#category_selector').val() == '') {
-        return false;
-    }
-
     $('.fields_' + formType + ' :input').each(function (i) {
+
         if ($(this).parent().parent().attr('display') === "no") {
             return;
         }
@@ -472,6 +489,7 @@ function validate(formType) {
         var field_value = $(this).val();
         var field_name = $(this).attr('field_name');
         var field_type = $(this).attr('field_type');
+
         var min_length = $(this).attr('min_length');
         var max_length = $(this).attr('max_length');
 
@@ -488,16 +506,19 @@ function validate(formType) {
 
         if (field_type == 'required' || field_value !== '') {
             if (field_value === '') {
-                $('.fields_' + formType + ' #error_' + field_name).text('<?php echo $error_required ?>').show();
+                $('.fields_' + formType + ' #error_' + field_name).text('<?php echo $error_required ?>');
                 warnings ++;
-            } else if (min_length != undefined && field_value.length < min_length) {
-                $('.fields_' + formType + ' #error_' + field_name).text('<?php echo $error_length; ?> ' + min_length + ' <?php echo $text_characters; ?>').show();
+            }
+            else if (min_length != undefined && field_value.length < min_length) {
+                $('.fields_' + formType + ' #error_' + field_name).text('<?php echo $error_length; ?> ' + min_length + ' <?php echo $text_characters; ?>');
                 warnings ++;
-            } else if (max_length != undefined && field_value.length > max_length) {
-                $('.fields_' + formType + ' #error_' + field_name).text((field_value.length - max_length) + ' <?php echo $error_char_limit; ?>').show();
+            }
+            else if (max_length != undefined && field_value.length > max_length) {
+                $('.fields_' + formType + ' #error_' + field_name).text((field_value.length - max_length) + ' <?php echo $error_char_limit; ?>');
                 warnings ++;
-            } else {
-                $('.fields_' + formType + ' #error_' + field_name).text('').hide();
+            }
+            else {
+                $('.fields_' + formType + ' #error_' + field_name).text('');
             }
         }
     });
@@ -513,7 +534,7 @@ function validate(formType) {
         });
     }
 
-    if ($('.fields_' + formType + ' [name="category"]').val() == undefined) {
+    if ($('.fields_' + formType + ' [name="category"]').attr('value') == undefined) {
         warnings ++;
     }
 
@@ -524,6 +545,7 @@ function validate(formType) {
     }
 }
 
+//form = 'quick' or 'advanced'
 function validate_and_save(formType) {
     if (validate(formType)) {
         if (formType == 'advanced') {
@@ -581,111 +603,110 @@ var nodeBox = '';
 var nodeString = '';
 var nodeStringSimple = '';
 
-function loadBrowseNode(field) {
-    $('#browse-node-modal').modal('toggle');
+$('.browseNode').bind('click', function(e){
+  e.preventDefault();
 
-    var html = '';
+  var html = '';
 
-    $('#'+field+'_input').val('');
+  nodeBox = $(this).attr("field_name");
+  $('#'+nodeBox+'_text').remove();
+  $(this).val('');
 
-    nodeString = '';
-    nodeStringSimple = '';
+  nodeString = '';
+  nodeStringSimple = '';
 
-    $.ajax({
-        url: 'index.php?route=openbay/amazonus_listing/getBrowseNodes&token=<?php echo $token; ?>',
-        type: 'POST',
-        data: {},
-        dataType: 'json',
-        beforeSend: function(){
-            $('#browse-node-content').empty();
-            $('#'+field+'_label').empty().hide();
-        },
-        success: function(data) {
-            if (data.node.error != true){
-                html += '<div class="row">';
-                html += '<div class="input-group col-md-12">';
-                html += '<p><select class="form-control" id="root-node" onchange="nodeSelect(\'root-node\', \''+field+'\');">';
-                html += '<option value=""><?php echo $text_select; ?></option>';
-                $.each(data.children, function(k,v){
-                    html += '<option value="'+ v.node_id+'">'+ v.name+'</option>';
-                });
-                html += '</select></p>';
-                html += '</div>';
-                html += '</div>';
+  $.ajax({
+      url: 'index.php?route=openbay/amazonus_listing/getBrowseNodes&token=<?php echo $token; ?>',
+      type: 'POST',
+      dataType: 'json',
+      beforeSend: function(){
+          $('#browseNodeFormContent').empty();
+          showGreyScreen('browseNodeForm');
+      },
+      success: function(data) {
+          if (data.node.error != true){
+              html += '<select class="nodeSelect mTop20 width250">';
+              html += '<option value=""><?php echo $text_select; ?></option>';
 
-                $('#browse-node-content').empty().html(html);
-            }else{
-                alert(data.node.error);
-            }
-        },
-        failure: function(){
-            alert('<?php echo $error_load_nodes; ?>');
-        },
-        error: function(){
-            alert('<?php echo $error_load_nodes; ?>');
-        }
-    });
+              $.each(data.children, function(k,v){
+                  html += '<option value="'+ v.node_id+'">'+ v.name+'</option>';
+              });
+
+              html += '</select><br />';
+
+              $('#browseNodeFormContent').html(html);
+          }else{
+              alert(data.node.error);
+              hideGreyScreen('browseNodeForm');
+          }
+      },
+      failure: function(){
+          alert('<?php echo $error_load_nodes; ?>');
+          hideGreyScreen('browseNodeForm');
+      },
+      error: function(){
+          alert('<?php echo $error_load_nodes; ?>');
+          hideGreyScreen('browseNodeForm');
+      }
+  });
+});
+
+$('.nodeSelect').bind('change', function(e){
+  e.preventDefault();
+
+  //called when the root node id is chosen
+  var html = '';
+  var node = $(this).val();
+  var parentNodeName = $(this).find(":selected").text();
+  nodeString += '<h3>'+parentNodeName+' ></h3>';
+  nodeStringSimple += parentNodeName+' > ';
+
+  $.ajax({
+      url: 'index.php?route=openbay/amazonus_listing/getBrowseNodes&token=<?php echo $token; ?>',
+      type: 'POST',
+      data: { node: node},
+      dataType: 'json',
+      beforeSend: function(){
+          $('#browseNodeFormContent select').remove();
+          $('#browseNodeFormContent').append('<img src="view/image/loading.gif" alt="" />');
+      },
+      success: function(data) {
+          if (data.node.error != true){
+              if (data.node.final == 0){
+                  html += '<select class="nodeSelect mTop20 width250">';
+                  html += '<option value=""><?php echo $text_select; ?></option>';
+
+                  $.each(data.children, function(k,v){
+                      html += '<option value="'+ v.node_id+'">'+ v.name+'</option>';
+                  });
+
+                  html += '</select>';
+              }else{
+                  html += '<a onclick="saveNode('+data.node.id+')" class="button"><?php echo $button_save; ?></a>';
+              }
+
+              $('#browseNodeFormContent').html(nodeString+html);
+          }else{
+              alert(data.node.error);
+              hideGreyScreen('browseNodeForm');
+          }
+      },
+      failure: function(){
+          alert('<?php echo $error_load_nodes; ?>');
+          hideGreyScreen('browseNodeForm');
+      },
+      error: function(){
+          alert('<?php echo $error_load_nodes; ?>');
+          hideGreyScreen('browseNodeForm');
+      }
+  });
+});
+
+function saveNode(id){
+    $('input[field_name='+nodeBox+']').val(id);
+    $('input[field_name='+nodeBox+']').after('<span id="'+nodeBox+'_text" style="margin-left:15px;">'+nodeStringSimple+'</span>');
+    hideGreyScreen('browseNodeForm');
 }
 
-function nodeSelect(field, original_field) {
-    //called when the root node id is chosen
-    var html = '';
-    var node = $('#'+field).val();
-    var parentNodeName = $('#'+field).find(":selected").text();
-    nodeStringSimple += parentNodeName+' > ';
-
-    $.ajax({
-        url: 'index.php?route=openbay/amazonus_listing/getBrowseNodes&token=<?php echo $token; ?>',
-        type: 'POST',
-        data: { node: node},
-        dataType: 'json',
-        beforeSend: function(){
-            $('#browse-node-content').empty().html('<a class="btn btn-primary" disabled="disabled"><i class="fa fa-cog fa-lg fa-spin"></i> </a>');
-        },
-        success: function(data) {
-            if (data.node.error != true){
-                html += '<div class="row">';
-                html += '<div class="col-sm-12 text-left">';
-                html += '<h4>'+nodeStringSimple+'</h4>';
-                html += '</div>';
-                html += '</div>';
-                if (data.node.final == 0){
-                    html += '<div class="row">';
-                    html += '<div class="input-group col-md-12">';
-                    html += '<p><select class="form-control" id="'+field+'-'+node+'" onchange="nodeSelect(\''+field+'-'+node+'\', \''+original_field+'\');">';
-                    html += '<option value=""><?php echo $text_select; ?></option>';
-                    $.each(data.children, function(k,v){
-                        html += '<option value="'+ v.node_id+'">'+ v.name+'</option>';
-                    });
-                    html += '</select></p>';
-                    html += '</div>';
-                    html += '</div>';
-                }else{
-                    html += '<div class="row">';
-                    html += '<div class="col-sm-12 text-right">';
-                    html += '<a onclick="saveNode('+data.node.id+', \''+original_field+'\', \''+nodeStringSimple+'\')" class="btn btn-primary"><i class="fa fa-save fa-lg"></i> <?php echo $button_save; ?></a>';
-                    html += '</div>';
-                    html += '</div>';
-                }
-
-                $('#browse-node-content').empty().html(html);
-            }else{
-                alert(data.node.error);
-            }
-        },
-        failure: function(){
-            alert('<?php echo $error_load_nodes; ?>');
-        },
-        error: function(){
-            alert('<?php echo $error_load_nodes; ?>');
-        }
-    });
-}
-
-function saveNode(id, field, text){
-    $('input[field_name='+field+']').val(id);
-    $('#'+field+'_label').text(text).show();
-    $('#browse-node-modal').modal('toggle');
-}
-//--></script>
+//--></script> 
 <?php echo $footer; ?>

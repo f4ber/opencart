@@ -334,10 +334,10 @@
                   <td class="text-right"><?php echo $voucher['amount']; ?></td>
                 </tr>
                 <?php } ?>
-                <?php foreach ($totals as $total) { ?>
+                <?php foreach ($totals as $totals) { ?>
                 <tr>
-                  <td colspan="4" class="text-right"><?php echo $total['title']; ?>:</td>
-                  <td class="text-right"><?php echo $total['text']; ?></td>
+                  <td colspan="4" class="text-right"><?php echo $totals['title']; ?>:</td>
+                  <td class="text-right"><?php echo $totals['text']; ?></td>
                 </tr>
                 <?php } ?>
               </tbody>

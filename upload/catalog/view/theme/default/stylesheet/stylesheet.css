@@ -4,7 +4,6 @@ body {
 	color: #666;
 	font-size: 12px;
 	line-height: 20px;
-	width: 100%;
 }
 h1, h2, h3, h4, h5, h6 {
 	color: #444;
@@ -572,6 +571,7 @@ footer h5 {
 	min-height: 0;
 }
 }
+
 .product-thumb .rating {
 	padding-bottom: 10px;
 }
@@ -616,6 +616,7 @@ h2.price {
 .product-list .product-thumb .button-group {
 	border-left: 1px solid #ddd;
 }
+
 @media (max-width: 768px) {
 	.product-list .product-thumb .button-group {
 		border-left: none;
@@ -653,6 +654,10 @@ h2.price {
 		width: 33.33%;
 	}
 }
+
+
+
+
 .thumbnails {
 	overflow: auto;
 	clear: both;
@@ -685,7 +690,7 @@ h2.price {
 
 /* fixed colum left + content + right*/
 @media (min-width: 768px) {
-    #column-left  .product-layout .col-md-3 {
+    #column-left  .product-layout .col-md-3{
        width: 100%;
     }
     #column-left + #content .product-layout .col-md-3 {
@@ -697,15 +702,4 @@ h2.price {
     #content + #column-right .product-layout .col-md-3{
        width: 100%;
     }
-}
-
-/* fixed product layouts used in left and right columns */
-#column-left .product-layout,
-#column-right .product-layout {
-	width: 100%;
-}
-
-/* fixed mobile cart quantity input */
-.input-group .form-control[name^=quantity] {
-	min-width: 50px;
 }

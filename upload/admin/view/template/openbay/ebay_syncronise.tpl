@@ -12,11 +12,9 @@
       </ul>
     </div>
   </div>
-  <div class="container-fluid">
-    <?php if ($error_warning) { ?>
-      <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?></div>
-    <?php } ?>
-  </div>
+  <?php if ($error_warning) { ?>
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?></div>
+  <?php } ?>
   <div class="container-fluid">
     <div class="panel panel-default">
       <div class="panel-heading">

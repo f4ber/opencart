@@ -1116,7 +1116,7 @@
       },
 
       // language
-      lang: 'en-US',                // language 'en-US', 'ko-KR', ...
+      lang: 'ru-RU',                // language 'en-US', 'ko-KR', ...
       direction: null,              // text direction, ex) 'rtl'
 
       // toolbar
@@ -1282,108 +1282,110 @@
       }
     },
 
-    // default language: en-US
+    // default language: ru-RU, special for opencart-russia.ru
+
     lang: {
-      'en-US': {
+      'ru-RU': {
         font: {
-          bold: 'Bold',
-          italic: 'Italic',
-          underline: 'Underline',
-          strikethrough: 'Strikethrough',
-          subscript: 'Subscript',
-          superscript: 'Superscript',
-          clear: 'Remove Font Style',
-          height: 'Line Height',
-          name: 'Font Family',
-          size: 'Font Size'
+          bold: 'Полужирный',
+          italic: 'Курсив',
+          underline: 'Подчёркнутый',
+          strikethrough: 'Зачеркнутый',
+          subscript: 'Под символом',
+          superscript: 'Над символом',
+          clear: 'Убрать стили шрифта',
+          height: 'Высота линии',
+          name: 'Шрифт',
+          size: 'Размер'
         },
         image: {
-          image: 'Picture',
-          insert: 'Insert Image',
-          resizeFull: 'Resize Full',
-          resizeHalf: 'Resize Half',
-          resizeQuarter: 'Resize Quarter',
-          floatLeft: 'Float Left',
-          floatRight: 'Float Right',
-          floatNone: 'Float None',
-          dragImageHere: 'Drag an image here',
-          selectFromFiles: 'Select from files',
-          url: 'Image URL',
-          remove: 'Remove Image'
+          image: 'Картинка',
+          insert: 'Вставить картинку',
+          resizeFull: 'Восстановить размер',
+          resizeHalf: 'Уменьшить до 50%',
+          resizeQuarter: 'Уменьшить до 25%',
+          floatLeft: 'Расположить слева',
+          floatRight: 'Расположить справа',
+          floatNone: 'Расположение по-умолчанию',
+          dragImageHere: 'Перетащите сюда картинку',
+          selectFromFiles: 'Выбрать из файлов',
+          url: 'URL картинки',
+          remove: 'Удалить картинку'
         },
         link: {
-          link: 'Link',
-          insert: 'Insert Link',
-          unlink: 'Unlink',
-          edit: 'Edit',
-          textToDisplay: 'Text to display',
-          url: 'To what URL should this link go?',
-          openInNewWindow: 'Open in new window'
+          link: 'Ссылка',
+          insert: 'Вставить ссылку',
+          unlink: 'Убрать ссылку',
+          edit: 'Редактировать',
+          textToDisplay: 'Отображаемый текст',
+          url: 'URL для перехода',
+          openInNewWindow: 'Открывать в новом окне'
         },
         video: {
-          video: 'Video',
-          videoLink: 'Video Link',
-          insert: 'Insert Video',
-          url: 'Video URL?',
+          video: 'Видео',
+          videoLink: 'Ссылка на видео',
+          insert: 'Вставить видео',
+          url: 'Видео URL?',
           providers: '(YouTube, Vimeo, Vine, Instagram, DailyMotion or Youku)'
         },
         table: {
-          table: 'Table'
+          table: 'Таблица'
         },
         hr: {
-          insert: 'Insert Horizontal Rule'
+          insert: 'Вставить горизонтальную линию'
         },
         style: {
-          style: 'Style',
-          normal: 'Normal',
-          blockquote: 'Quote',
-          pre: 'Code',
-          h1: 'Header 1',
-          h2: 'Header 2',
-          h3: 'Header 3',
-          h4: 'Header 4',
-          h5: 'Header 5',
-          h6: 'Header 6'
+          style: 'Стиль',
+          normal: 'Нормальный',
+          blockquote: 'Цитата',
+          pre: 'Код',
+          h1: 'Заголовок 1',
+          h2: 'Заголовок 2',
+          h3: 'Заголовок 3',
+          h4: 'Заголовок 4',
+          h5: 'Заголовок 5',
+          h6: 'Заголовок 6'
         },
         lists: {
-          unordered: 'Unordered list',
-          ordered: 'Ordered list'
+          unordered: 'Маркированный список',
+          ordered: 'Нумерованный список'
         },
         options: {
-          help: 'Help',
-          fullscreen: 'Full Screen',
-          codeview: 'Code View'
+          help: 'Помощь',
+          fullscreen: 'На весь экран',
+          codeview: 'Исходный код'
         },
         paragraph: {
-          paragraph: 'Paragraph',
-          outdent: 'Outdent',
-          indent: 'Indent',
-          left: 'Align left',
-          center: 'Align center',
-          right: 'Align right',
-          justify: 'Justify full'
+          paragraph: 'Параграф',
+          outdent: 'Уменьшить отступ',
+          indent: 'Увеличить отступ',
+          left: 'Выровнять по левому краю',
+          center: 'Выровнять по центру',
+          right: 'Выровнять по правому краю',
+          justify: 'Растянуть по ширине'
         },
         color: {
-          recent: 'Recent Color',
-          more: 'More Color',
-          background: 'Background Color',
-          foreground: 'Foreground Color',
-          transparent: 'Transparent',
-          setTransparent: 'Set transparent',
-          reset: 'Reset',
-          resetToDefault: 'Reset to default'
+          recent: 'Последний цвет',
+          more: 'Еще цвета',
+          background: 'Цвет фона',
+          foreground: 'Цвет шрифта',
+          transparent: 'Прозрачный',
+          setTransparent: 'Сделать прозрачным',
+          reset: 'Сброс',
+          resetToDefault: 'Восстановить умолчания'
         },
         shortcut: {
-          shortcuts: 'Keyboard shortcuts',
-          close: 'Close',
-          textFormatting: 'Text formatting',
-          action: 'Action',
-          paragraphFormatting: 'Paragraph formatting',
-          documentStyle: 'Document Style'
+          shortcuts: 'Сочетания клавиш',
+          close: 'Закрыть',
+          textFormatting: 'Форматирование текста',
+          action: 'Действие',
+          paragraphFormatting: 'Форматирование параграфа',
+          documentStyle: 'Стиль документа',
+          extraKeys: 'Дополнительные комбинации'
         },
         history: {
-          undo: 'Undo',
-          redo: 'Redo'
+          undo: 'Отменить',
+          redo: 'Повтор'
         }
       }
     }

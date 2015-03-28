@@ -69,10 +69,6 @@ $('#button-upload').on('click', function() {
 
 	$('#form-upload input[name=\'file\']').trigger('click');
 	
-	if (typeof timer != 'undefined') {
-    	clearInterval(timer);
-	}
-		
 	timer = setInterval(function() {
 		if ($('#form-upload input[name=\'file\']').val() != '') {
 			clearInterval(timer);

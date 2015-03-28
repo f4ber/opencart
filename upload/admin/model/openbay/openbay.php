@@ -3,20 +3,6 @@ class ModelOpenbayOpenbay extends Model {
 	private $url = 'https://account.openbaypro.com/';
 	private $error;
 
-	public function patch() {
-		/**
-		 * Fix to update event names on versions later than 2.0.1 due to the change.
-		 */
-		if (version_compare(VERSION, '2.0.1', '>=')) {
-			$this->load->model('extension/event');
-
-			$this->model_extension_event->deleteEvent('openbay');
-
-			$this->model_extension_event->addEvent('openbay', 'post.admin.product.delete', 'extension/openbay/eventDeleteProduct');
-			$this->model_extension_event->addEvent('openbay', 'post.admin.product.edit', 'extension/openbay/eventEditProduct');
-		}
-	}
-
 	public function updateV2Test() {
 		$this->error = array();
 
@@ -125,7 +111,7 @@ class ModelOpenbayOpenbay extends Model {
 		$web_root = preg_replace('/system\/$/', '', DIR_SYSTEM);
 
 		$local_file = $web_root . 'system/download/openbaypro_update.zip';
-		$handle = fopen($local_file, "w+");
+		$handle = fopen($local_file,"w+");
 
 		$post = array('version' => 2, 'beta' => $beta);
 
@@ -469,15 +455,12 @@ class ModelOpenbayOpenbay extends Model {
 					/**
 					 * Run the patch files
 					 */
-					$this->patch(false);
-					$this->load->model('openbay/ebay');
-					$this->model_openbay_ebay->patch();
-					$this->load->model('openbay/amazon');
-					$this->model_openbay_amazon->patch();
-					$this->load->model('openbay/amazonus');
-					$this->model_openbay_amazonus->patch();
-					$this->load->model('openbay/etsy');
-					$this->model_openbay_etsy->patch();
+					$this->load->model('openbay/ebay_patch');
+					$this->model_openbay_ebay_patch->patch(false);
+					$this->load->model('openbay/amazon_patch');
+					$this->model_openbay_amazon_patch->patch(false);
+					$this->load->model('openbay/amazonus_patch');
+					$this->model_openbay_amazonus_patch->patch(false);
 
 					/**
 					 * File remove operation (clean up old files)
@@ -630,19 +613,15 @@ class ModelOpenbayOpenbay extends Model {
 		$error = array();
 
 		if (!function_exists('mcrypt_encrypt')) {
-			$error[] = $this->language->get('error_mcrypt');
+			$error[] = $this->language->get('lang_error_mcrypt');
 		}
 
 		if (!function_exists('mb_detect_encoding')) {
-			$error[] = $this->language->get('error_mbstring');
+			$error[] = $this->language->get('lang_error_mbstring');
 		}
 
 		if (!function_exists('ftp_connect')) {
-			$error[] = $this->language->get('error_ftpconnect');
-		}
-
-		if (!ini_get('allow_url_fopen')) {
-			$error[] = $this->language->get('error_fopen');
+			$error[] = $this->language->get('lang_error_ftpconnect');
 		}
 
 		$root_directory = preg_replace('/catalog\/$/', '', DIR_CATALOG);

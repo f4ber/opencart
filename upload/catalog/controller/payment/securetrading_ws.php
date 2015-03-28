@@ -1,5 +1,7 @@
 <?php
+
 class ControllerPaymentSecureTradingWs extends Controller {
+
 	public function index() {
 		$this->load->model('checkout/order');
 		$this->language->load('payment/securetrading_ws');
@@ -116,7 +118,7 @@ class ControllerPaymentSecureTradingWs extends Controller {
 
 				$response = $this->model_payment_securetrading_ws->call($requestblock_xml->asXML());
 
-				if ($response !== false) {
+				if ($response !== False) {
 					$response_xml = simplexml_load_string($response);
 
 					if ($response_xml->response['type'] == 'THREEDQUERY') {
@@ -310,7 +312,7 @@ class ControllerPaymentSecureTradingWs extends Controller {
 	private function processAuthResponse($response, $order_id) {
 		$json = array();
 
-		if ($response !== false) {
+		if ($response !== False) {
 			$response_xml = simplexml_load_string($response);
 
 			if ($response_xml->response['type'] == 'AUTH') {
@@ -361,4 +363,5 @@ class ControllerPaymentSecureTradingWs extends Controller {
 
 		return $json;
 	}
+
 }

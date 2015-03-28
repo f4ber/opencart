@@ -1,15 +1,16 @@
-<?php echo $header; ?><?php echo $column_left; ?>
+<?php echo $header; ?><?php echo $menu; ?>
 <div id="content">
+  <ul class="breadcrumb">
+    <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+    <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+    <?php } ?>
+  </ul>
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
-      <h1><?php echo $heading_title; ?></h1>
-      <ul class="breadcrumb">
-        <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
-        <?php } ?>
-      </ul>
+        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1><i class="fa fa-pencil"></i> <?php echo $heading_title; ?></h1>
     </div>
   </div>
   <div class="container-fluid">
@@ -63,9 +64,9 @@
         <thead>
           <tr>
             <th><?php echo $text_name; ?></th>
-            <th><?php echo $text_sku; ?></th>
             <th><?php echo $text_model; ?></th>
             <th><?php echo $text_combination; ?></th>
+            <th><?php echo $text_sku; ?></th>
             <th><?php echo $text_amazon_sku; ?></th>
             <th class="text-center"><?php echo $text_action; ?></th>
           </tr>
@@ -82,7 +83,7 @@
 
   function loadLinks() {
     $.ajax({
-      url: '<?php echo html_entity_decode($link_get_items); ?>',
+      url: '<?php echo html_entity_decode($get_item_links_ajax); ?>',
       type: 'get',
       dataType: 'json',
       data: 'product_id=' + encodeURIComponent($('#new-product-id').val()) + '&amazon_sku=' + encodeURIComponent($('#new-amazon-sku').val()),
@@ -91,19 +92,9 @@
         for (i in json) {
           rows += '<tr>';
           rows += '<td class="text-left">' + json[i]['product_name'] + '</td>';
-          if (json[i]['var'] != '') {
-            rows += '<td class="text-left">' + json[i]['var'] + '</td>';
-          } else {
-            rows += '<td class="text-left">' + json[i]['sku'] + '</td>';
-          }
           rows += '<td class="text-left">' + json[i]['model'] + '</td>';
-
-          if (typeof json[i]['combination'] == 'undefined') {
-            rows += '<td class="text-left">-</td>';
-          } else {
-            rows += '<td class="text-left">' + json[i]['combination'] + '</td>';
-          }
-
+          rows += '<td class="text-left">' + json[i]['combi'] + '</td>';
+          rows += '<td class="text-left">' + json[i]['sku'] + '</td>';
           rows += '<td class="text-left">' + json[i]['amazon_sku'] + '</td>';
           rows += '<td class="text-center"><a data-toggle="tooltip" data-original-title="<?php echo $button_remove; ?>" class="btn btn-danger" onclick="removeLink(this, \'' + json[i]['amazon_sku'] + '\');"><i class="fa fa-times-circle"></i></a></td>';
           rows += '</tr>';
@@ -120,7 +111,7 @@
     e.preventDefault();
 
     $.ajax({
-      url: '<?php echo html_entity_decode($link_get_unlinked_items); ?>',
+      url: '<?php echo html_entity_decode($get_unlinked_items_ajax); ?>',
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
@@ -149,24 +140,24 @@
 
         var rows = '';
         for (i in json) {
-          rows += '<tr id="product_row_' + json[i]['product_id'] + '_' + json[i]['sku'] + '">';
+          rows += '<tr id="product_row_' + json[i]['product_id'] + '_' + json[i]['var'] + '">';
             rows += '<td class="text-left">' + json[i]['product_name'] + '</td>';
             rows += '<td class="text-left">' + json[i]['model'] + '</td>';
-            rows += '<td class="text-left">' + json[i]['combination'] + '</td>';
+            rows += '<td class="text-left">' + json[i]['combi'] + '</td>';
             rows += '<td class="text-left">' + json[i]['sku'] + '</td>';
             rows += '<td class="text-left">';
-              rows += '<div class="amazon_sku_div_' + json[i]['product_id'] + '_' + json[i]['sku'] + '">';
+              rows += '<div class="amazon_sku_div_' + json[i]['product_id'] + '_' + json[i]['var'] + '">';
                 rows += '<div class="row">';
                   rows += '<div class="col-sm-8 form-group">';
-                    rows += '<input class="form-control amazon_sku_' + json[i]['product_id'] + '_' + json[i]['sku'] + '"  type="text">';
+                    rows += '<input class="form-control amazon_sku_' + json[i]['product_id'] + '_' + json[i]['var'] + '"  type="text">';
                   rows += '</div>';
                   rows += '<div class="col-sm-4 form-group">';
-                    rows += '<a class="btn btn-primary" onclick="addNewSkuField(' + json[i]['product_id'] + ', \'' + json[i]['sku'] + '\')" data-toggle="tooltip" data-original-title="<?php echo $button_add; ?>"><i class="fa fa-plus-circle"></i></a>';
+                    rows += '<a class="btn btn-primary" onclick="addNewSkuField(' + json[i]['product_id'] + ', \'' + json[i]['var'] + '\')" data-toggle="tooltip" data-original-title="<?php echo $button_add; ?>"><i class="fa fa-plus-circle"></i></a>';
                   rows += '</div>';
                 rows += '</div>';
               rows += '</div>';
             rows += '</td>';
-            rows += '<td class="text-center"><a class="btn btn-primary" onclick="addNewLink(this, \'' + json[i]['product_id'] + '\', \'' + json[i]['sku'] + '\')" data-toggle="tooltip" data-original-title="<?php echo $button_add; ?>"><i class="fa fa-plus-circle"></i></a></td>';
+            rows += '<td class="text-center"><a class="btn btn-primary" onclick="addNewLink(this, \'' + json[i]['product_id'] + '\', \'' + json[i]['var'] + '\')" data-toggle="tooltip" data-original-title="<?php echo $button_add; ?>"><i class="fa fa-plus-circle"></i></a></td>';
           rows += '</tr>';
         }
 
@@ -180,7 +171,7 @@
 
   function addLink(button, product_id, amazon_sku, variation) {
     $.ajax({
-      url: '<?php echo html_entity_decode($link_add_item); ?>',
+      url: '<?php echo html_entity_decode($add_item_link_ajax); ?>',
       type: 'get',
       dataType: 'json',
       async: 'false',
@@ -202,7 +193,7 @@
 
   function removeLink(button, amazon_sku) {
     $.ajax({
-      url: '<?php echo html_entity_decode($link_remove_item); ?>',
+      url: '<?php echo html_entity_decode($remove_item_link_ajax); ?>',
       type: 'get',
       dataType: 'json',
       data: 'amazon_sku=' + encodeURIComponent(amazon_sku),
@@ -280,8 +271,8 @@
     var product_id = $('#new-product-id').val();
     var amazon_sku = $('#new-amazon-sku').val();
     var variation = '';
-    if ($('#variant-option-selector').length != 0) {
-      variation = $('#variant-option-selector').val();
+    if ($('#openstock-option-selector').length != 0) {
+      variation = $('#openstock-option-selector').val();
     }
 
     addLink('#add-new-button', product_id, amazon_sku, variation);
@@ -290,7 +281,7 @@
     $('#new-amazon-sku').val('');
     $('#new-product-id').val('');
     $('#new-product-id').attr('label', '');
-    $('.variant-option-selector').remove();
+    $('#openstock-option-selector').remove();
   }
 
   $('#new-product').autocomplete({
@@ -318,21 +309,21 @@
 
   function openstockCheck(product_id) {
     $.ajax({
-      url: '<?php echo html_entity_decode($link_get_variants); ?>',
+      url: '<?php echo html_entity_decode($get_openstock_options_ajax); ?>',
       dataType: 'json',
       type: 'get',
       data: 'product_id=' + product_id,
       success: function (data) {
         if (!data) {
-          $(".variant-option-selector").remove();
+          $("#openstock-option-selector").remove();
           return;
         }
 
-        var optionHtml = '<div class="form-group variant-option-selector" style="margin-top:5px;"><select id="variant-option-selector" class="form-control variant-option-selector"><option value=""/>';
+        var optionHtml = '<select id="openstock-option-selector"><option value=""/>';
         for (var i in data) {
-          optionHtml += '<option value="' + data[i]['sku'] + '">' + data[i]['combination'] + '</option>';
+          optionHtml += '<option value="' + data[i]['var'] + '">' + data[i]['combi'] + '</option>';
         }
-        optionHtml += '</select></div>';
+        optionHtml += '</select>';
         $('#new-product').after(optionHtml);
       },
       error: function (xhr, ajaxOptions, thrownError) {

@@ -534,20 +534,20 @@ class ControllerSettingStore extends Controller {
 
 		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
 
-		if (isset($this->request->post['config_open'])) {
-			$data['config_open'] = $this->request->post['config_open'];
+		if (isset($this->request->post['open'])) {
+			$data['open'] = $this->request->post['open'];
 		} elseif (isset($store_info['config_open'])) {
-			$data['config_open'] = $store_info['config_open'];
+			$data['open'] = $store_info['open'];
 		} else {
-			$data['config_open'] = '';
+			$data['open'] = '';
 		}
 
-		if (isset($this->request->post['config_comment'])) {
-			$data['config_comment'] = $this->request->post['config_comment'];
+		if (isset($this->request->post['comment'])) {
+			$data['comment'] = $this->request->post['comment'];
 		} elseif (isset($store_info['config_comment'])) {
-			$data['config_comment'] = $store_info['config_comment'];
+			$data['comment'] = $store_info['comment'];
 		} else {
-			$data['config_comment'] = '';
+			$data['comment'] = '';
 		}
 
 		$this->load->model('localisation/location');

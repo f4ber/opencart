@@ -13,7 +13,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
-<link href="view/javascript/bootstrap/opencart/opencart.css" type="text/css" rel="stylesheet" />
+<link href="view/javascript/bootstrap/less/bootstrap.less" rel="stylesheet/less" />
+<script src="view/javascript/bootstrap/less-1.7.4.min.js"></script>
 <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
 <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
 <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
@@ -69,9 +70,9 @@
         <?php } ?>
         <li class="divider"></li>
         <li class="dropdown-header"><?php echo $text_help; ?> <i class="fa fa-life-ring"></i></li>
-        <li><a href="http://www.opencart.com" target="_blank"><?php echo $text_homepage; ?></a></li>
-        <li><a href="http://docs.opencart.com" target="_blank"><?php echo $text_documentation; ?></a></li>
-        <li><a href="http://forum.opencart.com" target="_blank"><?php echo $text_support; ?></a></li>
+        <li><a href="http://opencart-russia.ru" target="_blank"><?php echo $text_homepage; ?></a></li>
+        <li><a href="http://forum.opencart-russia.ru/threads/soderzhanie.5/" target="_blank"><?php echo $text_documentation; ?></a></li>
+        <li><a href="http://forum.opencart-russia.ru/" target="_blank"><?php echo $text_support; ?></a></li>
       </ul>
     </li>
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>

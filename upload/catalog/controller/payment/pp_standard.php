@@ -196,7 +196,11 @@ class ControllerPaymentPPStandard extends Controller {
 						break;
 				}
 
-				$this->model_checkout_order->addOrderHistory($order_id, $order_status_id);
+				if (!$order_info['order_status_id']) {
+					$this->model_checkout_order->addOrderHistory($order_id, $order_status_id);
+				} else {
+					$this->model_checkout_order->addOrderHistory($order_id, $order_status_id);
+				}
 			} else {
 				$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('config_order_status_id'));
 			}
